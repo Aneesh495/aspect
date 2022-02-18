@@ -1,0 +1,22 @@
+# Build artifacts
+obj/
+bin/
+lib/
+*.o
+*.ali
+*.bexch
+*.d
+b~*
+*.tmp
+
+# Editor and OS files
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+
+# Test output and logs
+*.log
+test_out/
+telemetry.sock

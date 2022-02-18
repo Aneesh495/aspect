@@ -1,0 +1,14 @@
+name = "aspect"
+description = "High-assurance railway computer-based interlocking kernel, EN 50128 SIL 4 vital logic engine, and ETCS Level 2 movement authority processor in Ada"
+version = "1.0.0"
+authors = ["Aneesh"]
+maintainers = ["aneeshkrishnaparthasarathy@gmail.com"]
+licenses = "Apache-2.0"
+tags = ["railway", "interlocking", "etcs", "safety-critical", "tmr"]
+
+[build-switches]
+release.ada_compiler_switches = ["-O3", "-gnat2022", "-gnatp", "-gnatwa"]
+debug.ada_compiler_switches = ["-g", "-O0", "-gnat2022", "-gnata", "-gnato", "-gnatwa"]
+
+[[executables]]
+aspect = "aspect-main.adb"

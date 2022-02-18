@@ -1,0 +1,72 @@
+project Aspect is
+
+   type Mode_Type is ("debug", "release", "verify");
+   Mode : Mode_Type := external ("MODE", "debug");
+
+   for Source_Dirs use (
+      "src/core",
+      "src/topology",
+      "src/interlocking",
+      "src/etcs",
+      "src/vital",
+      "src/sim",
+      "src/telemetry",
+      "src/cli",
+      "tests/framework",
+      "tests/suites",
+      "tests/runner",
+      "bindings/c"
+   );
+
+   for Object_Dir use "obj";
+   for Exec_Dir use "bin";
+   for Main use ("aspect-main.adb", "test_runner.adb");
+
+   for Languages use ("Ada", "C");
+
+   package Compiler is
+      Common_Ada_Flags := (
+         "-gnat2022",       -- Ada 2022 standard features
+         "-gnatwa",         -- All warnings enabled
+         "-gnatw.X",        -- Disable warnings on internal GNAT pragmas
+         "-gnatyg",         -- GNAT standard style guide checks
+         "-gnatQ"           -- Keep going to produce trees and artifacts
+      );
+
+      case Mode is
+         when "debug" =>
+            for Default_Switches ("Ada") use Common_Ada_Flags & (
+               "-g",
+               "-O0",
+               "-gnata",     -- Enable assertions and pre/postconditions
+               "-gnato"      -- Enable numeric overflow checking
+            );
+            for Default_Switches ("C") use ("-g", "-O0", "-Wall", "-Wextra");
+
+         when "release" =>
+            for Default_Switches ("Ada") use Common_Ada_Flags & (
+               "-O3",
+               "-gnatn"      -- Enable cross-unit inlining
+            );
+            for Default_Switches ("C") use ("-O3", "-Wall", "-Wextra");
+
+         when "verify" =>
+            for Default_Switches ("Ada") use Common_Ada_Flags & (
+               "-g",
+               "-O1",
+               "-gnata",
+               "-gnato"
+            );
+            for Default_Switches ("C") use ("-g", "-O1", "-Wall");
+      end case;
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("Ada") use ("-E"); -- Store symbolic tracebacks
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("Ada") use ("-g");
+   end Linker;
+
+end Aspect;
