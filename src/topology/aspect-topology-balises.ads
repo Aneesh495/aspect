@@ -3,8 +3,6 @@
 -- and controllable transparent balises driven by Lineside Electronic Units (LEU).
 
 with Interfaces; use Interfaces;
-with Aspect.Types; use Aspect.Types;
-with Aspect.Topology; use Aspect.Topology;
 with Aspect.CRC; use Aspect.CRC;
 
 package Aspect.Topology.Balises is

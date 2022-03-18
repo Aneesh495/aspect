@@ -2,9 +2,6 @@
 -- Implements 4-aspect signaling (Clear, Preliminary Caution, Caution, Stop),
 -- approach locking timers, and fail-safe filament current sensing.
 
-with Aspect.Types; use Aspect.Types;
-with Aspect.Topology; use Aspect.Topology;
-
 package Aspect.Topology.Signals is
 
    -- Standard approach locking release timeout (120 seconds in milliseconds)

@@ -2,8 +2,6 @@
 -- Implements mechanical locking bars, detector occupancy locking, stroke timers,
 -- and trail-through shear pin failure detection.
 
-with Aspect.Types; use Aspect.Types;
-
 package Aspect.Topology.Switches is
 
    -- Standard point machine electric motor stroke duration (3.5 seconds)

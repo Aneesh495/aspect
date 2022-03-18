@@ -1,5 +1,3 @@
-with Interfaces; use Interfaces;
-
 package body Aspect.Topology.Balises is
 
    procedure Initialize_Balise

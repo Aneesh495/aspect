@@ -2,9 +2,6 @@
 -- Implements electrical shunting, axle balancing, ballast disturbance detection,
 -- and fail-safe vital occupancy state logic.
 
-with Aspect.Types; use Aspect.Types;
-with Aspect.Topology; use Aspect.Topology;
-
 package Aspect.Topology.Tracks is
 
    type Detection_Technology is (

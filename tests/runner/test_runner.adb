@@ -3,6 +3,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Command_Line;
 with Aspect.Tests.Core;
+with Aspect.Tests.Topology;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -15,6 +16,9 @@ begin
 
    -- Core mathematical and checksum verification
    Aspect.Tests.Core.Run_Core_Tests (Overall_Passed);
+
+   -- Track topology and physical infrastructure verification
+   Aspect.Tests.Topology.Run_Topology_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");
