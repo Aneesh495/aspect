@@ -5,8 +5,8 @@ package body Aspect.Interlocking.Routes is
       Id          : Route_Id;
       Name        : String;
       Origin_Sig  : Signal_Id;
-      Exit_Sig    : Signal_Id;
-      Class       : Route_Class := Class_Main_Train)
+      Exit_Sig    : Signal_Id_Base := Null_Signal_Id;
+      Class       : Route_Class    := Class_Main_Train)
    is
       Len : constant Natural := Natural'Min (Name'Length, 16);
    begin
@@ -77,8 +77,8 @@ package body Aspect.Interlocking.Routes is
 
       case Route.State is
          when Route_Unset =>
-            if New_State = Route_Requested then
-               Route.State := Route_Requested;
+            if New_State in Route_Requested | Route_Interlocked then
+               Route.State := New_State;
                Success     := True;
             else
                Success := False;

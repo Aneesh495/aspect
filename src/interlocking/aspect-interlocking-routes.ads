@@ -49,8 +49,8 @@ package Aspect.Interlocking.Routes is
       Id          : Route_Id;
       Name        : String;
       Origin_Sig  : Signal_Id;
-      Exit_Sig    : Signal_Id;
-      Class       : Route_Class := Class_Main_Train);
+      Exit_Sig    : Signal_Id_Base := Null_Signal_Id;
+      Class       : Route_Class    := Class_Main_Train);
 
    procedure Add_Section
      (Route   : in out Interlocking_Route;
