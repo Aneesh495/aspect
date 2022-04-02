@@ -5,6 +5,7 @@ with Ada.Command_Line;
 with Aspect.Tests.Core;
 with Aspect.Tests.Topology;
 with Aspect.Tests.Interlocking;
+with Aspect.Tests.ETCS;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -23,6 +24,9 @@ begin
 
    -- Computer-Based Interlocking (CBI) verification
    Aspect.Tests.Interlocking.Run_Interlocking_Tests (Overall_Passed);
+
+   -- ETCS Level 2 and Subset-026 verification
+   Aspect.Tests.ETCS.Run_ETCS_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");

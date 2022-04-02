@@ -120,15 +120,15 @@ package body Aspect.ETCS.Packets is
       for I in 1 .. P.Step_Count loop
          declare
             D_Int : constant Unsigned_32 := Unsigned_32 (Float (P.Steps (I).Start_Distance));
-            G_Int : constant Integer_16  := Integer_16 (Float (P.Steps (I).Gradient));
+            G_Mod : constant Unsigned_16 := Unsigned_16'Mod (Integer (Float (P.Steps (I).Gradient)));
          begin
             Buffer (Pos)     := Unsigned_8 (Shift_Right (D_Int, 24) and 16#FF#);
             Buffer (Pos + 1) := Unsigned_8 (Shift_Right (D_Int, 16) and 16#FF#);
             Buffer (Pos + 2) := Unsigned_8 (Shift_Right (D_Int, 8) and 16#FF#);
             Buffer (Pos + 3) := Unsigned_8 (D_Int and 16#FF#);
 
-            Buffer (Pos + 4) := Unsigned_8 (Shift_Right (Unsigned_16 (G_Int), 8) and 16#FF#);
-            Buffer (Pos + 5) := Unsigned_8 (Unsigned_16 (G_Int) and 16#FF#);
+            Buffer (Pos + 4) := Unsigned_8 (Shift_Right (G_Mod, 8) and 16#FF#);
+            Buffer (Pos + 5) := Unsigned_8 (G_Mod and 16#FF#);
             Pos := Pos + 6;
          end;
       end loop;
@@ -173,12 +173,18 @@ package body Aspect.ETCS.Packets is
                  or Shift_Left (Unsigned_32 (Buffer (Pos + 2)), 8)
                  or Unsigned_32 (Buffer (Pos + 3));
 
-               G_Raw : constant Integer_16 :=
-                 Integer_16 (Shift_Left (Unsigned_16 (Buffer (Pos + 4)), 8)
-                             or Unsigned_16 (Buffer (Pos + 5)));
+               G_Raw_U : constant Unsigned_16 :=
+                 Shift_Left (Unsigned_16 (Buffer (Pos + 4)), 8)
+                 or Unsigned_16 (Buffer (Pos + 5));
+               G_Val   : Float;
             begin
+               if G_Raw_U >= 16#8000# then
+                  G_Val := Float (Integer (G_Raw_U) - 65536);
+               else
+                  G_Val := Float (G_Raw_U);
+               end if;
                P.Steps (I).Start_Distance := Distance_M (Float (D_Raw));
-               P.Steps (I).Gradient       := Gradient_Per_Mille (Float (G_Raw));
+               P.Steps (I).Gradient       := Gradient_Per_Mille (G_Val);
                Pos := Pos + 6;
             end;
          end loop;

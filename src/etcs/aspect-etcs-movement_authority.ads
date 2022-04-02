@@ -2,7 +2,6 @@
 -- Manages EoA progression, dynamic extensions from Radio Block Centre,
 -- and emergency authority revocations.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology; use Aspect.Topology;
 with Aspect.ETCS.Packets; use Aspect.ETCS.Packets;
 

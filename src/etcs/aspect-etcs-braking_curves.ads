@@ -2,8 +2,6 @@
 -- Computes Emergency Brake Intervention (EBI), Service Brake Intervention (SBI),
 -- Warning (W), Permitted Speed (P), Indication (I), and release speed supervisory envelopes.
 
-with Aspect.Types; use Aspect.Types;
-
 package Aspect.ETCS.Braking_Curves is
 
    type Supervision_State is (

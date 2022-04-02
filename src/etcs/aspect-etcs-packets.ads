@@ -2,10 +2,7 @@
 -- Implements encoding and decoding for Packet 3 (National Values), Packet 5 (Linking),
 -- Packet 12 (Movement Authority), Packet 21 (Gradient), and Packet 27 (Static Speed).
 
-with Aspect.Types; use Aspect.Types;
-with Aspect.ETCS; use Aspect.ETCS;
 with Aspect.CRC; use Aspect.CRC;
-with Interfaces; use Interfaces;
 
 package Aspect.ETCS.Packets is
 
