@@ -1,3 +1,5 @@
+with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
+
 package body Aspect.ETCS.RBC is
 
    procedure Initialize_RBC (Centre : out Radio_Block_Centre) is

@@ -2,10 +2,7 @@
 -- Translates Computer-Based Interlocking route locks into dynamic Movement Authorities,
 -- gradient profiles, and speed profiles transmitted over Euroradio.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology; use Aspect.Topology;
-with Aspect.Topology.Network; use Aspect.Topology.Network;
-with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 with Aspect.Interlocking.Engine; use Aspect.Interlocking.Engine;
 with Aspect.ETCS.Packets; use Aspect.ETCS.Packets;
 
