@@ -6,6 +6,7 @@ with Aspect.Tests.Core;
 with Aspect.Tests.Topology;
 with Aspect.Tests.Interlocking;
 with Aspect.Tests.ETCS;
+with Aspect.Tests.Vital;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -27,6 +28,9 @@ begin
 
    -- ETCS Level 2 and Subset-026 verification
    Aspect.Tests.ETCS.Run_ETCS_Tests (Overall_Passed);
+
+   -- EN 50128 SIL 4 Vital TMR and Safety Invariant verification
+   Aspect.Tests.Vital.Run_Vital_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");
