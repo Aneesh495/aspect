@@ -7,6 +7,7 @@ with Aspect.Tests.Topology;
 with Aspect.Tests.Interlocking;
 with Aspect.Tests.ETCS;
 with Aspect.Tests.Vital;
+with Aspect.Tests.Sim;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -31,6 +32,9 @@ begin
 
    -- EN 50128 SIL 4 Vital TMR and Safety Invariant verification
    Aspect.Tests.Vital.Run_Vital_Tests (Overall_Passed);
+
+   -- Simulation, vehicle dynamics, odometry, and closed-loop world step
+   Aspect.Tests.Sim.Run_Sim_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");
