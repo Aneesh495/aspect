@@ -8,6 +8,7 @@ with Aspect.Tests.Interlocking;
 with Aspect.Tests.ETCS;
 with Aspect.Tests.Vital;
 with Aspect.Tests.Sim;
+with Aspect.Tests.Telemetry;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -35,6 +36,9 @@ begin
 
    -- Simulation, vehicle dynamics, odometry, and closed-loop world step
    Aspect.Tests.Sim.Run_Sim_Tests (Overall_Passed);
+
+   -- Real-time telemetry snapshot capture and JSON protocol streaming
+   Aspect.Tests.Telemetry.Run_Telemetry_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");
