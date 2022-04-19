@@ -20,9 +20,9 @@ project Aspect is
 
    for Object_Dir use "obj";
    for Exec_Dir use "bin";
-   for Main use ("aspect-main.adb", "test_runner.adb");
+   for Main use ("test_runner.adb");
 
-   for Languages use ("Ada");
+   for Languages use ("Ada", "C");
 
    package Compiler is
       Common_Ada_Flags := (
