@@ -9,6 +9,7 @@ with Aspect.Tests.ETCS;
 with Aspect.Tests.Vital;
 with Aspect.Tests.Sim;
 with Aspect.Tests.Telemetry;
+with Aspect.Tests.POSIX;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -39,6 +40,9 @@ begin
 
    -- Real-time telemetry snapshot capture and JSON protocol streaming
    Aspect.Tests.Telemetry.Run_Telemetry_Tests (Overall_Passed);
+
+   -- POSIX high-resolution monotonic clock and non-blocking sockets
+   Aspect.Tests.POSIX.Run_POSIX_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");
