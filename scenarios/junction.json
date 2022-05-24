@@ -1,0 +1,170 @@
+{
+  "scenario_name": "Grand Central Junction",
+  "version": "1.0.0",
+  "description": "High-density 4-track junction with converging scissors crossover, loop siding, flank protection, and multi-train passenger operations.",
+  "sections": [
+    {
+      "id": 1,
+      "name": "SEC_APPROACH_01",
+      "length_m": 800.0,
+      "line_speed_kph": 160.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 2,
+      "name": "SEC_JUNCTION_02",
+      "length_m": 600.0,
+      "line_speed_kph": 160.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 3,
+      "name": "SEC_MAINLINE_03",
+      "length_m": 1200.0,
+      "line_speed_kph": 200.0,
+      "gradient_per_mille": 1.5,
+      "curvature_radius_m": 2500.0
+    },
+    {
+      "id": 4,
+      "name": "SEC_TURNOUT_04",
+      "length_m": 450.0,
+      "line_speed_kph": 60.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 500.0
+    },
+    {
+      "id": 5,
+      "name": "SEC_LOOP_SIDING_05",
+      "length_m": 900.0,
+      "line_speed_kph": 60.0,
+      "gradient_per_mille": -1.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 6,
+      "name": "SEC_DEPOT_06",
+      "length_m": 500.0,
+      "line_speed_kph": 40.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 300.0
+    }
+  ],
+  "switches": [
+    {
+      "id": 1,
+      "name": "SW_MAIN_DIVERGE",
+      "point_section": 1,
+      "facing_section": 1,
+      "normal_section": 2,
+      "reverse_section": 4,
+      "speed_normal_kph": 160.0,
+      "speed_reverse_kph": 60.0
+    },
+    {
+      "id": 2,
+      "name": "SW_LOOP_CONVERGE",
+      "point_section": 3,
+      "facing_section": 3,
+      "normal_section": 2,
+      "reverse_section": 5,
+      "speed_normal_kph": 160.0,
+      "speed_reverse_kph": 60.0
+    }
+  ],
+  "signals": [
+    {
+      "id": 1,
+      "name": "SIG_HOME_01",
+      "category": "MAIN",
+      "section": 1,
+      "approach_section": 1,
+      "next_signal": 2,
+      "chainage_km": 0.75
+    },
+    {
+      "id": 2,
+      "name": "SIG_STARTER_02",
+      "category": "MAIN",
+      "section": 2,
+      "approach_section": 1,
+      "next_signal": 3,
+      "chainage_km": 1.35
+    },
+    {
+      "id": 3,
+      "name": "SIG_ADVANCED_03",
+      "category": "MAIN",
+      "section": 3,
+      "approach_section": 2,
+      "next_signal": 0,
+      "chainage_km": 2.55
+    },
+    {
+      "id": 4,
+      "name": "SIG_SIDING_SHUNT",
+      "category": "SHUNT",
+      "section": 5,
+      "approach_section": 4,
+      "next_signal": 0,
+      "chainage_km": 1.80
+    }
+  ],
+  "routes": [
+    {
+      "id": 1,
+      "name": "R1_MAINLINE",
+      "entry_signal": 1,
+      "exit_signal": 2,
+      "sections": [1, 2, 3],
+      "switch_alignments": [
+        {"switch": 1, "position": "NORMAL"},
+        {"switch": 2, "position": "NORMAL"}
+      ],
+      "overlap_section": 3,
+      "overlap_distance_m": 250.0
+    },
+    {
+      "id": 2,
+      "name": "R2_LOOP_DIVERGE",
+      "entry_signal": 1,
+      "exit_signal": 4,
+      "sections": [1, 4, 5],
+      "switch_alignments": [
+        {"switch": 1, "position": "REVERSE"},
+        {"switch": 2, "position": "NORMAL"}
+      ],
+      "overlap_section": 5,
+      "overlap_distance_m": 200.0
+    }
+  ],
+  "flank_defenses": [
+    {
+      "route": 1,
+      "protective_switch": 2,
+      "diverting_position": "NORMAL",
+      "protective_signal": 4,
+      "fouling_section": 4
+    }
+  ],
+  "trains": [
+    {
+      "id": 1,
+      "name": "EXPRESS_101",
+      "mass_tonnes": 480.0,
+      "length_m": 200.0,
+      "start_chainage_km": 0.05,
+      "start_section": 1
+    },
+    {
+      "id": 2,
+      "name": "COMMUTER_204",
+      "mass_tonnes": 320.0,
+      "length_m": 150.0,
+      "start_chainage_km": 0.01,
+      "start_section": 5
+    }
+  ]
+}
