@@ -1,0 +1,133 @@
+{
+  "scenario_name": "High-Speed Trunk 320",
+  "version": "1.0.0",
+  "description": "320 km/h dedicated high-speed trunk corridor with continuous ETCS Level 2 full-supervision movement authority updates.",
+  "sections": [
+    {
+      "id": 1,
+      "name": "LGV_BLOCK_01",
+      "length_m": 1200.0,
+      "line_speed_kph": 320.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 2,
+      "name": "LGV_BLOCK_02",
+      "length_m": 1200.0,
+      "line_speed_kph": 320.0,
+      "gradient_per_mille": 1.2,
+      "curvature_radius_m": 6000.0
+    },
+    {
+      "id": 3,
+      "name": "LGV_BLOCK_03",
+      "length_m": 1200.0,
+      "line_speed_kph": 320.0,
+      "gradient_per_mille": 2.5,
+      "curvature_radius_m": 6000.0
+    },
+    {
+      "id": 4,
+      "name": "LGV_BLOCK_04",
+      "length_m": 1200.0,
+      "line_speed_kph": 320.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 5,
+      "name": "LGV_BLOCK_05",
+      "length_m": 1200.0,
+      "line_speed_kph": 300.0,
+      "gradient_per_mille": -1.8,
+      "curvature_radius_m": 4500.0
+    },
+    {
+      "id": 6,
+      "name": "LGV_BLOCK_06",
+      "length_m": 1200.0,
+      "line_speed_kph": 280.0,
+      "gradient_per_mille": -2.2,
+      "curvature_radius_m": 4000.0
+    },
+    {
+      "id": 7,
+      "name": "LGV_BLOCK_07",
+      "length_m": 1200.0,
+      "line_speed_kph": 220.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 3000.0
+    },
+    {
+      "id": 8,
+      "name": "LGV_BLOCK_08",
+      "length_m": 1200.0,
+      "line_speed_kph": 160.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 2000.0
+    }
+  ],
+  "switches": [],
+  "signals": [
+    {
+      "id": 1,
+      "name": "SIG_LGV_01",
+      "category": "MAIN",
+      "section": 1,
+      "approach_section": 1,
+      "next_signal": 2,
+      "chainage_km": 1.15
+    },
+    {
+      "id": 2,
+      "name": "SIG_LGV_02",
+      "category": "MAIN",
+      "section": 3,
+      "approach_section": 2,
+      "next_signal": 3,
+      "chainage_km": 3.55
+    },
+    {
+      "id": 3,
+      "name": "SIG_LGV_03",
+      "category": "MAIN",
+      "section": 5,
+      "approach_section": 4,
+      "next_signal": 4,
+      "chainage_km": 5.95
+    },
+    {
+      "id": 4,
+      "name": "SIG_LGV_04",
+      "category": "MAIN",
+      "section": 7,
+      "approach_section": 6,
+      "next_signal": 0,
+      "chainage_km": 8.35
+    }
+  ],
+  "routes": [
+    {
+      "id": 1,
+      "name": "R_LGV_THROUGH",
+      "entry_signal": 1,
+      "exit_signal": 4,
+      "sections": [1, 2, 3, 4, 5, 6, 7, 8],
+      "switch_alignments": [],
+      "overlap_section": 8,
+      "overlap_distance_m": 500.0
+    }
+  ],
+  "flank_defenses": [],
+  "trains": [
+    {
+      "id": 1,
+      "name": "TGV_DUPLEX_801",
+      "mass_tonnes": 420.0,
+      "length_m": 200.0,
+      "start_chainage_km": 0.10,
+      "start_section": 1
+    }
+  ]
+}
