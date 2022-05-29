@@ -1,0 +1,133 @@
+{
+  "scenario_name": "Safety Fault Injection & Stress Rig",
+  "version": "1.0.0",
+  "description": "Hardware fault injection testbed: degraded ballast resistance, point motor stall, filament burnout, and opposing conflicting train dispatches.",
+  "sections": [
+    {
+      "id": 1,
+      "name": "SEC_STRESS_01",
+      "length_m": 500.0,
+      "line_speed_kph": 120.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 2,
+      "name": "SEC_STRESS_02",
+      "length_m": 400.0,
+      "line_speed_kph": 80.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 3,
+      "name": "SEC_STRESS_03",
+      "length_m": 600.0,
+      "line_speed_kph": 120.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 0.0
+    },
+    {
+      "id": 4,
+      "name": "SEC_STRESS_FOULING",
+      "length_m": 350.0,
+      "line_speed_kph": 40.0,
+      "gradient_per_mille": 0.0,
+      "curvature_radius_m": 300.0
+    }
+  ],
+  "switches": [
+    {
+      "id": 1,
+      "name": "SW_FAULT_TESTBED",
+      "point_section": 1,
+      "facing_section": 1,
+      "normal_section": 2,
+      "reverse_section": 4,
+      "speed_normal_kph": 120.0,
+      "speed_reverse_kph": 40.0
+    }
+  ],
+  "signals": [
+    {
+      "id": 1,
+      "name": "SIG_STRESS_MAIN",
+      "category": "MAIN",
+      "section": 1,
+      "approach_section": 1,
+      "next_signal": 2,
+      "chainage_km": 0.45
+    },
+    {
+      "id": 2,
+      "name": "SIG_STRESS_EXIT",
+      "category": "MAIN",
+      "section": 2,
+      "approach_section": 1,
+      "next_signal": 0,
+      "chainage_km": 0.85
+    },
+    {
+      "id": 3,
+      "name": "SIG_STRESS_OPPOSING",
+      "category": "MAIN",
+      "section": 3,
+      "approach_section": 3,
+      "next_signal": 0,
+      "chainage_km": 1.45
+    }
+  ],
+  "routes": [
+    {
+      "id": 1,
+      "name": "R_STRESS_THROUGH",
+      "entry_signal": 1,
+      "exit_signal": 2,
+      "sections": [1, 2],
+      "switch_alignments": [
+        {"switch": 1, "position": "NORMAL"}
+      ],
+      "overlap_section": 3,
+      "overlap_distance_m": 150.0
+    },
+    {
+      "id": 2,
+      "name": "R_STRESS_DIVERGING",
+      "entry_signal": 1,
+      "exit_signal": 2,
+      "sections": [1, 4],
+      "switch_alignments": [
+        {"switch": 1, "position": "REVERSE"}
+      ],
+      "overlap_section": 4,
+      "overlap_distance_m": 150.0
+    }
+  ],
+  "flank_defenses": [
+    {
+      "route": 1,
+      "protective_switch": 1,
+      "diverting_position": "NORMAL",
+      "protective_signal": 3,
+      "fouling_section": 4
+    }
+  ],
+  "trains": [
+    {
+      "id": 1,
+      "name": "TRAIN_ALPHA",
+      "mass_tonnes": 400.0,
+      "length_m": 160.0,
+      "start_chainage_km": 0.05,
+      "start_section": 1
+    },
+    {
+      "id": 2,
+      "name": "TRAIN_BETA",
+      "mass_tonnes": 350.0,
+      "length_m": 140.0,
+      "start_chainage_km": 1.40,
+      "start_section": 3
+    }
+  ]
+}
