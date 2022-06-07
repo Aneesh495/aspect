@@ -10,6 +10,7 @@ with Aspect.Tests.Vital;
 with Aspect.Tests.Sim;
 with Aspect.Tests.Telemetry;
 with Aspect.Tests.POSIX;
+with Aspect.Tests.Scenario_Loader;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -43,6 +44,9 @@ begin
 
    -- POSIX high-resolution monotonic clock and non-blocking sockets
    Aspect.Tests.POSIX.Run_POSIX_Tests (Overall_Passed);
+
+   -- Declarative JSON railway scenario loader and validator
+   Aspect.Tests.Scenario_Loader.Run_Scenario_Loader_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");

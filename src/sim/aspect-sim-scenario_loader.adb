@@ -1,6 +1,7 @@
 -- Implementation of declarative JSON railway scenario loader.
 
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Exceptions;
 with Aspect.Types; use Aspect.Types;
 with Aspect.Topology; use Aspect.Topology;
 with Aspect.Topology.Tracks; use Aspect.Topology.Tracks;
@@ -18,12 +19,17 @@ package body Aspect.Sim.Scenario_Loader is
       Msg (1 .. Copy_Len) := Str (Str'First .. Str'First + Copy_Len - 1);
    end Set_Error;
 
-   function Index_Of (Haystack : String; Needle : String; Start_At : Positive := 1) return Natural is
+   function Index_Of (Haystack : String; Needle : String; Start_At : Natural := 0) return Natural is
+      Actual_Start : Natural;
    begin
-      if Needle'Length = 0 or else Haystack'Length < Needle'Length or else Start_At > Haystack'Last then
+      if Needle'Length = 0 or else Haystack'Length < Needle'Length then
          return 0;
       end if;
-      for I in Start_At .. Haystack'Last - Needle'Length + 1 loop
+      Actual_Start := (if Start_At >= Haystack'First then Start_At else Haystack'First);
+      if Actual_Start > Haystack'Last - Needle'Length + 1 then
+         return 0;
+      end if;
+      for I in Actual_Start .. Haystack'Last - Needle'Length + 1 loop
          if Haystack (I .. I + Needle'Length - 1) = Needle then
             return I;
          end if;
@@ -31,7 +37,7 @@ package body Aspect.Sim.Scenario_Loader is
       return 0;
    end Index_Of;
 
-   function Parse_Positive_Int (Text : String; Key : String; Start_At : Positive := 1) return Natural is
+   function Parse_Positive_Int (Text : String; Key : String; Start_At : Natural := 0) return Natural is
       K_Idx : constant Natural := Index_Of (Text, Key, Start_At);
       Idx   : Natural;
       Val   : Natural := 0;
@@ -52,7 +58,7 @@ package body Aspect.Sim.Scenario_Loader is
       return (if Found then Val else 0);
    end Parse_Positive_Int;
 
-   function Parse_Float_Val (Text : String; Key : String; Start_At : Positive := 1) return Float is
+   function Parse_Float_Val (Text : String; Key : String; Start_At : Natural := 0) return Float is
       K_Idx : constant Natural := Index_Of (Text, Key, Start_At);
       Idx   : Natural;
       S_Start: Natural;
@@ -413,12 +419,12 @@ package body Aspect.Sim.Scenario_Loader is
          Error_Msg => Error_Msg);
 
    exception
-      when others =>
+      when E : others =>
          if Is_Open (File) then
             Close (File);
          end if;
          Success := False;
-         Set_Error (Error_Msg, "Unexpected exception during scenario load");
+         Set_Error (Error_Msg, Ada.Exceptions.Exception_Information (E));
    end Load_Scenario_From_File;
 
 end Aspect.Sim.Scenario_Loader;
