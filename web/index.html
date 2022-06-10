@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aspect: Railway Vital Interlocking & ETCS Level 2 Cockpit</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+  <!-- Top Navigation & Vital Status Header -->
+  <header class="cockpit-header">
+    <div class="brand-group">
+      <div class="logo-mark">
+        <span class="signal-glyph">●</span>
+      </div>
+      <div>
+        <h1 class="system-title">ASPECT</h1>
+        <div class="system-subtitle">VITAL INTERLOCKING &amp; ETCS LEVEL 2 SUPERVISOR</div>
+      </div>
+    </div>
+
+    <div class="assurance-badges">
+      <span class="badge sil4-badge">EN 50128 SIL 4</span>
+      <span class="badge subset-badge">ERA ETCS SUBSET-026</span>
+      <span class="badge tmr-badge">2oo3 TMR KERNEL</span>
+    </div>
+
+    <div class="telemetry-status-group">
+      <div class="metric-pill">
+        <span class="metric-label">SIM TIME</span>
+        <span id="metric-time" class="metric-value">00:00.000</span>
+      </div>
+      <div class="metric-pill">
+        <span class="metric-label">CYCLES</span>
+        <span id="metric-steps" class="metric-value">0</span>
+      </div>
+      <div class="connection-status">
+        <span id="conn-dot" class="status-dot disconnected"></span>
+        <span id="conn-label" class="conn-text">DISCONNECTED</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport Layout -->
+  <main class="cockpit-grid">
+    <!-- Interactive SVG Track Schematic Canvas -->
+    <section class="panel track-canvas-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <span class="panel-icon">☵</span>
+          <h2>GEOGRAPHIC TRACK CIRCUIT SCHEMATIC &amp; TURNOUTS</h2>
+        </div>
+        <div class="legend-group">
+          <span class="legend-item"><span class="legend-color color-clear"></span> CLEAR</span>
+          <span class="legend-item"><span class="legend-color color-locked"></span> ROUTE LOCKED</span>
+          <span class="legend-item"><span class="legend-color color-occupied"></span> OCCUPIED</span>
+          <span class="legend-item"><span class="legend-color color-overlap"></span> OVERLAP BUFFER</span>
+        </div>
+      </div>
+
+      <div class="svg-container">
+        <svg id="track-svg" viewBox="0 0 1200 240" preserveAspectRatio="xMidYMid meet">
+          <!-- Background Grid Lines -->
+          <defs>
+            <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1"/>
+            </pattern>
+            <!-- Track Glow Filter -->
+            <filter id="track-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+
+          <!-- Track Blocks Container -->
+          <g id="svg-track-paths"></g>
+
+          <!-- Turnout Blades Container -->
+          <g id="svg-switches"></g>
+
+          <!-- Signals Container -->
+          <g id="svg-signals"></g>
+
+          <!-- Trains Container -->
+          <g id="svg-trains"></g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Bottom Three-Column Deck -->
+    <div class="deck-row">
+      <!-- Deck Column 1: ETCS DMI Speedometer -->
+      <section class="panel dmi-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-icon">◎</span>
+            <h2>ETCS LEVEL 2 CAB DMI SPEEDOMETER</h2>
+          </div>
+          <span class="dmi-mode-badge" id="dmi-mode">FS (FULL SUPERVISION)</span>
+        </div>
+
+        <div class="dmi-body">
+          <div class="speedometer-wrapper">
+            <svg id="dmi-gauge-svg" viewBox="0 0 240 240">
+              <circle cx="120" cy="120" r="90" class="gauge-track-bg" />
+              <path id="gauge-ebi-arc" class="gauge-arc ebi-arc" />
+              <path id="gauge-warning-arc" class="gauge-arc warning-arc" />
+              <path id="gauge-permitted-arc" class="gauge-arc permitted-arc" />
+              <path id="gauge-speed-needle" class="gauge-needle" />
+              <!-- Center Hub -->
+              <circle cx="120" cy="120" r="14" class="gauge-center-hub" />
+              <text id="gauge-speed-text" x="120" y="115" class="gauge-digital-speed">0.0</text>
+              <text x="120" y="132" class="gauge-unit">km/h</text>
+            </svg>
+          </div>
+
+          <div class="dmi-supervision-metrics">
+            <div class="dmi-metric-row">
+              <span class="dmi-label">PERMITTED SPEED (V_PERM)</span>
+              <span id="dmi-v-perm" class="dmi-value perm-color">0.0 km/h</span>
+            </div>
+            <div class="dmi-metric-row">
+              <span class="dmi-label">WARNING THRESHOLD (V_WARN)</span>
+              <span id="dmi-v-warn" class="dmi-value warn-color">0.0 km/h</span>
+            </div>
+            <div class="dmi-metric-row">
+              <span class="dmi-label">EMERGENCY BRAKE (V_EBI)</span>
+              <span id="dmi-v-ebi" class="dmi-value ebi-color">0.0 km/h</span>
+            </div>
+            <div class="dmi-metric-row">
+              <span class="dmi-label">TARGET DISTANCE (EoA)</span>
+              <span id="dmi-target-dist" class="dmi-value">0 m</span>
+            </div>
+
+            <!-- Dynamic Bar Indicators -->
+            <div class="effort-bars">
+              <div class="bar-group">
+                <span class="bar-label">THROTTLE DEMAND</span>
+                <div class="progress-bar-bg">
+                  <div id="bar-throttle" class="progress-fill throttle-fill" style="width: 0%"></div>
+                </div>
+                <span id="text-throttle" class="bar-val">0%</span>
+              </div>
+              <div class="bar-group">
+                <span class="bar-label">SERVICE BRAKE</span>
+                <div class="progress-bar-bg">
+                  <div id="bar-brake" class="progress-fill brake-fill" style="width: 0%"></div>
+                </div>
+                <span id="text-brake" class="bar-val">0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deck Column 2: Interlocking Dispatch Controls -->
+      <section class="panel dispatch-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-icon">⎔</span>
+            <h2>CBI ROUTE DISPATCH &amp; CONTROL DESK</h2>
+          </div>
+        </div>
+
+        <div class="dispatch-body">
+          <div class="control-actions">
+            <button id="btn-route-1" class="dispatch-btn btn-route-set">
+              <span class="btn-primary">SET ROUTE 1</span>
+              <span class="btn-sub">MAINLINE THROUGH (S1 &rarr; S2 &rarr; S3)</span>
+            </button>
+            <button id="btn-route-2" class="dispatch-btn btn-route-diverge">
+              <span class="btn-primary">SET ROUTE 2</span>
+              <span class="btn-sub">DIVERGE TO LOOP (S1 &rarr; S4 &rarr; S5)</span>
+            </button>
+            <button id="btn-route-cancel" class="dispatch-btn btn-route-cancel">
+              <span class="btn-primary">CANCEL ACTIVE ROUTE</span>
+              <span class="btn-sub">STANDSTILL PROVING TIMEOUT</span>
+            </button>
+            <button id="btn-emergency-stop" class="dispatch-btn btn-emergency-stop">
+              <span class="btn-primary">EMERGENCY ALL-STOP</span>
+              <span class="btn-sub">CLAMP ALL SIGNALS &amp; TRIP EBI</span>
+            </button>
+          </div>
+
+          <div class="route-table-wrapper">
+            <table class="route-table">
+              <thead>
+                <tr>
+                  <th>ROUTE</th>
+                  <th>STATE</th>
+                  <th>ENTRY</th>
+                  <th>EXIT</th>
+                  <th>TRAIN</th>
+                </tr>
+              </thead>
+              <tbody id="route-table-body">
+                <!-- Dynamically populated from live telemetry -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deck Column 3: 2oo3 Vital Executive & Telemetry Health -->
+      <section class="panel diagnostics-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-icon">🛡</span>
+            <h2>2oo3 VITAL EXECUTIVE &amp; SAFETY AUDIT</h2>
+          </div>
+        </div>
+
+        <div class="diagnostics-body">
+          <!-- Channels Health -->
+          <div class="channels-grid">
+            <div class="channel-card healthy" id="card-chan-a">
+              <div class="card-tag">CHANNEL A</div>
+              <div class="card-status">NOMINAL</div>
+              <div class="card-metrics">0 FAULTS</div>
+            </div>
+            <div class="channel-card healthy" id="card-chan-b">
+              <div class="card-tag">CHANNEL B</div>
+              <div class="card-status">NOMINAL</div>
+              <div class="card-metrics">0 FAULTS</div>
+            </div>
+            <div class="channel-card healthy" id="card-chan-c">
+              <div class="card-tag">CHANNEL C</div>
+              <div class="card-status">NOMINAL</div>
+              <div class="card-metrics">0 FAULTS</div>
+            </div>
+          </div>
+
+          <!-- Voter Invariants Assessment -->
+          <div class="vital-card">
+            <div class="vital-row">
+              <span class="vital-label">2oo3 MAJORITY VOTER</span>
+              <span id="vital-voter-state" class="vital-value success">UNANIMOUS 3oo3</span>
+            </div>
+            <div class="vital-row">
+              <span class="vital-label">SAFETY INVARIANTS</span>
+              <span id="vital-invariant-state" class="vital-value success">PASS (5/5)</span>
+            </div>
+            <div class="vital-row">
+              <span class="vital-label">BYZANTINE DIVERGENCES</span>
+              <span id="vital-divergences" class="vital-value">0</span>
+            </div>
+            <div class="vital-row">
+              <span class="vital-label">FLANK DEFENSE STATUS</span>
+              <span id="vital-flank-state" class="vital-value success">ARMED &amp; LOCKED</span>
+            </div>
+          </div>
+
+          <!-- Telemetry Feed Log -->
+          <div class="event-log-wrapper">
+            <div class="log-title">REAL-TIME SAFETY EVENT STREAM</div>
+            <div id="event-log" class="event-log-container">
+              <div class="log-entry">[00:00.000] Aspect CBI Kernel initialized with 2oo3 TMR voter.</div>
+              <div class="log-entry">[00:00.000] Eurobalise transponder linking verified.</div>
+              <div class="log-entry">[00:00.000] Euroradio Euroradio Session established.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
