@@ -1,0 +1,747 @@
+/* ==========================================================================
+   Aspect: Railway Vital Interlocking & ETCS Level 2 Cockpit Design System
+   ========================================================================== */
+
+:root {
+  --bg-primary: #0a0d14;
+  --bg-secondary: #111622;
+  --bg-tertiary: #192233;
+  --bg-hover: #222d42;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(56, 189, 248, 0.3);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --color-green: #10b981;
+  --color-green-glow: rgba(16, 185, 129, 0.4);
+  --color-yellow: #f59e0b;
+  --color-yellow-glow: rgba(245, 158, 11, 0.4);
+  --color-red: #ef4444;
+  --color-red-glow: rgba(239, 68, 68, 0.4);
+  --color-cyan: #38bdf8;
+  --color-cyan-glow: rgba(56, 189, 248, 0.4);
+  --color-purple: #818cf8;
+
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.dark-theme {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Cockpit Header
+   ========================================================================== */
+
+.cockpit-header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(14, 165, 233, 0.35);
+}
+
+.signal-glyph {
+  color: #fff;
+  font-size: 18px;
+}
+
+.system-title {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.system-subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.assurance-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  border: 1px solid transparent;
+}
+
+.sil4-badge {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.subset-badge {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.tmr-badge {
+  background-color: rgba(129, 140, 248, 0.12);
+  color: #a5b4fc;
+  border-color: rgba(129, 140, 248, 0.3);
+}
+
+.telemetry-status-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.metric-pill {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-tertiary);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+}
+
+.metric-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-tertiary);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.connected {
+  background-color: var(--color-green);
+  box-shadow: 0 0 8px var(--color-green);
+  animation: pulse-green 2s infinite;
+}
+
+.status-dot.disconnected {
+  background-color: var(--color-red);
+  box-shadow: 0 0 8px var(--color-red);
+}
+
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.conn-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Main Grid Layout
+   ========================================================================== */
+
+.cockpit-grid {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 10px 16px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-icon {
+  color: var(--color-cyan);
+  font-size: 14px;
+}
+
+.panel-header h2 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+/* ==========================================================================
+   Track Schematic SVG Canvas
+   ========================================================================== */
+
+.track-canvas-panel .svg-container {
+  padding: 16px;
+  background-color: #07090e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#track-svg {
+  width: 100%;
+  height: 240px;
+  display: block;
+}
+
+.legend-group {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.legend-color {
+  width: 12px;
+  height: 6px;
+  border-radius: 2px;
+}
+
+.color-clear { background-color: var(--color-green); box-shadow: 0 0 6px var(--color-green-glow); }
+.color-locked { background-color: var(--color-yellow); box-shadow: 0 0 6px var(--color-yellow-glow); }
+.color-occupied { background-color: var(--color-red); box-shadow: 0 0 6px var(--color-red-glow); }
+.color-overlap { background-color: var(--color-purple); }
+
+/* SVG Visual Styles */
+.track-rail {
+  fill: none;
+  stroke: #252e42;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease, filter 0.3s ease;
+}
+
+.track-rail.state-clear {
+  stroke: var(--color-green);
+  filter: drop-shadow(0 0 3px var(--color-green-glow));
+}
+
+.track-rail.state-locked {
+  stroke: var(--color-yellow);
+  filter: drop-shadow(0 0 4px var(--color-yellow-glow));
+}
+
+.track-rail.state-occupied {
+  stroke: var(--color-red);
+  filter: drop-shadow(0 0 6px var(--color-red-glow));
+}
+
+.switch-point {
+  fill: none;
+  stroke: #475569;
+  stroke-width: 4;
+  transition: all 0.4s ease;
+}
+
+.switch-point.aligned-normal {
+  stroke: var(--color-cyan);
+}
+
+.switch-point.aligned-reverse {
+  stroke: var(--color-yellow);
+}
+
+.switch-indicator {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  fill: #fff;
+}
+
+.signal-housing {
+  fill: #1e293b;
+  stroke: #475569;
+  stroke-width: 1.5;
+}
+
+.signal-lamp {
+  transition: fill 0.2s ease, filter 0.2s ease;
+}
+
+.signal-lamp.lamp-red { fill: #ef4444; filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.8)); }
+.signal-lamp.lamp-yellow { fill: #f59e0b; filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.8)); }
+.signal-lamp.lamp-green { fill: #10b981; filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.8)); }
+.signal-lamp.lamp-off { fill: #334155; }
+
+.train-consist {
+  transition: transform 0.08s linear;
+}
+
+.train-body {
+  fill: #0284c7;
+  stroke: #38bdf8;
+  stroke-width: 2;
+  rx: 4;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+}
+
+.train-headlight {
+  fill: #fef08a;
+  filter: drop-shadow(0 0 4px #fef08a);
+}
+
+.train-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  fill: #ffffff;
+  text-anchor: middle;
+}
+
+/* ==========================================================================
+   Deck Row (Three Columns)
+   ========================================================================== */
+
+.deck-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* Deck 1: DMI Speedometer */
+.dmi-mode-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  background-color: rgba(56, 189, 248, 0.15);
+  color: var(--color-cyan);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.dmi-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.speedometer-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dmi-gauge-svg {
+  width: 200px;
+  height: 200px;
+}
+
+.gauge-track-bg {
+  fill: none;
+  stroke: #1e293b;
+  stroke-width: 14;
+}
+
+.gauge-arc {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.ebi-arc { stroke: var(--color-red); }
+.warning-arc { stroke: var(--color-yellow); }
+.permitted-arc { stroke: var(--color-green); }
+
+.gauge-needle {
+  stroke: #ffffff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: transform 0.1s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.gauge-center-hub {
+  fill: #334155;
+  stroke: #64748b;
+  stroke-width: 2;
+}
+
+.gauge-digital-speed {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 800;
+  fill: #ffffff;
+  text-anchor: middle;
+}
+
+.gauge-unit {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--text-muted);
+  text-anchor: middle;
+}
+
+.dmi-supervision-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dmi-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.dmi-label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.dmi-value {
+  color: #fff;
+  font-weight: 700;
+}
+
+.perm-color { color: var(--color-green); }
+.warn-color { color: var(--color-yellow); }
+.ebi-color { color: var(--color-red); }
+
+.effort-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 8px;
+}
+
+.bar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.bar-label {
+  width: 120px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 8px;
+  background-color: #1e293b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.1s ease;
+}
+
+.throttle-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+.brake-fill { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+
+.bar-val {
+  width: 40px;
+  text-align: right;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Deck 2: Interlocking Dispatch Controls */
+.dispatch-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.control-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dispatch-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  background-color: var(--bg-tertiary);
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.dispatch-btn:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--border-accent);
+}
+
+.btn-primary {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.btn-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.btn-route-set:hover .btn-primary { color: var(--color-green); }
+.btn-route-diverge:hover .btn-primary { color: var(--color-yellow); }
+.btn-route-cancel:hover .btn-primary { color: var(--color-cyan); }
+.btn-emergency-stop {
+  border-color: rgba(239, 68, 68, 0.3);
+  background-color: rgba(239, 68, 68, 0.08);
+}
+.btn-emergency-stop:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: var(--color-red);
+}
+.btn-emergency-stop .btn-primary { color: var(--color-red); }
+
+.route-table-wrapper {
+  overflow-x: auto;
+}
+
+.route-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.route-table th {
+  text-align: left;
+  padding: 6px 8px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  font-weight: 600;
+}
+
+.route-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+}
+
+.route-badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+.badge-interlocked { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.badge-requested { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.badge-unset { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+.badge-cancelled { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+/* Deck 3: 2oo3 Vital Executive & Telemetry Health */
+.diagnostics-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.channels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.channel-card {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.channel-card.healthy {
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.channel-card.faulted {
+  border-color: rgba(239, 68, 68, 0.4);
+  background-color: rgba(239, 68, 68, 0.08);
+}
+
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.card-status {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-green);
+}
+
+.card-metrics {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+.vital-card {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vital-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.vital-label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.vital-value {
+  font-weight: 700;
+  color: #fff;
+}
+
+.vital-value.success { color: var(--color-green); }
+.vital-value.danger { color: var(--color-red); }
+
+.event-log-wrapper {
+  background-color: #07090e;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.log-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.event-log-container {
+  height: 90px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-entry {
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
