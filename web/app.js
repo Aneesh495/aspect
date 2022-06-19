@@ -360,6 +360,50 @@
     };
   }
 
+  // Dispatch Control Handlers
+  function sendCommand(cmdObj) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(cmdObj));
+      logEvent(`[DISPATCH] Sent command: ${JSON.stringify(cmdObj)}`);
+    } else {
+      logEvent('[WARN] Cannot send command: Telemetry server disconnected.');
+    }
+  }
+
+  // Button Click Listeners
+  document.getElementById('btn-route-1')?.addEventListener('click', () => {
+    sendCommand({ command: 'set_route', route: 1 });
+  });
+
+  document.getElementById('btn-route-2')?.addEventListener('click', () => {
+    sendCommand({ command: 'set_route', route: 2 });
+  });
+
+  document.getElementById('btn-route-cancel')?.addEventListener('click', () => {
+    sendCommand({ command: 'cancel_route', route: 1 });
+  });
+
+  document.getElementById('btn-emergency-stop')?.addEventListener('click', () => {
+    sendCommand({ command: 'emergency_stop' });
+  });
+
+  // Global Keyboard Shortcuts
+  window.addEventListener('keydown', (e) => {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+      return;
+    }
+    const key = e.key.toUpperCase();
+    if (key === 'S') {
+      sendCommand({ command: 'set_route', route: 1 });
+    } else if (key === 'D') {
+      sendCommand({ command: 'set_route', route: 2 });
+    } else if (key === 'C') {
+      sendCommand({ command: 'cancel_route', route: 1 });
+    } else if (key === 'E') {
+      sendCommand({ command: 'emergency_stop' });
+    }
+  });
+
   // Initial Boot
   renderTracks([], []);
   renderSignals([]);
