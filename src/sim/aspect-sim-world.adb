@@ -3,6 +3,8 @@ with Aspect.Interlocking.Engine; use Aspect.Interlocking.Engine;
 with Aspect.ETCS.Packets; use Aspect.ETCS.Packets;
 with Aspect.ETCS.Braking_Curves; use Aspect.ETCS.Braking_Curves;
 with Aspect.Sim.Vehicle_Dynamics; use Aspect.Sim.Vehicle_Dynamics;
+with Aspect.Vital; use Aspect.Vital;
+with Aspect.Vital.Channels; use Aspect.Vital.Channels;
 
 package body Aspect.Sim.World is
 
@@ -39,6 +41,11 @@ package body Aspect.Sim.World is
       Cmd   : Interlocking_Command)
    is
    begin
+      for C in Channel_Id loop
+         if Is_Channel_Usable (World.Supervisor.Channels, C) then
+            World.Supervisor.Channels (C).Core_State.Net.Sections := World.Net.Sections;
+         end if;
+      end loop;
       Dispatch_Command (World.Supervisor, Cmd);
    end Send_Dispatcher_Command;
 
@@ -47,14 +54,26 @@ package body Aspect.Sim.World is
       Delta_Ms : Positive := Default_Sim_Step_Ms)
    is
       Delta_S   : constant Float := Float (Delta_Ms) / 1000.0;
-      Core_Ref  : Interlocking_Core := Get_Voted_Core (World.Supervisor);
+      Core_Ref  : Interlocking_Core;
       Succ      : Boolean;
    begin
       World.Sim_Time_Ms := World.Sim_Time_Ms + Delta_Ms;
       World.Total_Steps := World.Total_Steps + 1;
 
+      -- Propagate field track detection to vital supervisor before cycle
+      for C in Channel_Id loop
+         if Is_Channel_Usable (World.Supervisor.Channels, C) then
+            World.Supervisor.Channels (C).Core_State.Net.Sections := World.Net.Sections;
+         end if;
+      end loop;
+
       -- 1. Step the vital 2oo3 supervisory executive
       Execute_Minor_Cycle (World.Supervisor, Delta_Ms);
+      Core_Ref := Get_Voted_Core (World.Supervisor);
+
+      -- Synchronize physical field state with voted interlocking outputs
+      World.Net.Switches := Core_Ref.Net.Switches;
+      World.Net.Signals  := Core_Ref.Net.Signals;
 
       -- 2. Update train positions and track shunting in the physics world
       Update_Train_Positions (World.Registry, World.Net, Core_Ref, Delta_S);

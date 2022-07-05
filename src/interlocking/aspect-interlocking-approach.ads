@@ -2,7 +2,6 @@
 -- Enforces run-approach safety timers preventing instant route cancellation
 -- when an oncoming train has already entered the signal sighting envelope.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology.Network; use Aspect.Topology.Network;
 with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 

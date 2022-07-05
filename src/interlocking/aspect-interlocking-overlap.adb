@@ -1,3 +1,5 @@
+with Aspect.Topology.Tracks; use Aspect.Topology.Tracks;
+
 package body Aspect.Interlocking.Overlap is
 
    procedure Initialize_Overlap_Table (Table : out Overlap_Array) is

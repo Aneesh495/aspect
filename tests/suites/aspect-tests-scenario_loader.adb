@@ -1,6 +1,5 @@
 -- Implementation of scenario loader test suite.
 
-with Ada.Text_IO;
 with Aspect.Types; use Aspect.Types;
 with Aspect.Topology.Network; use Aspect.Topology.Network;
 with Aspect.Interlocking.Engine; use Aspect.Interlocking.Engine;

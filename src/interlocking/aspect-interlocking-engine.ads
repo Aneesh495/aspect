@@ -2,7 +2,6 @@
 -- Orchestrates route setting, conflicting route exclusion, detector locking,
 -- flank protection, overlap reservation, signal clearing, and sectional route release.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology.Network; use Aspect.Topology.Network;
 with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 with Aspect.Interlocking.Locking_Table; use Aspect.Interlocking.Locking_Table;

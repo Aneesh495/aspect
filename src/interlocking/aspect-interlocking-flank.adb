@@ -1,3 +1,6 @@
+with Aspect.Topology.Switches; use Aspect.Topology.Switches;
+with Aspect.Topology.Signals; use Aspect.Topology.Signals;
+
 package body Aspect.Interlocking.Flank is
 
    procedure Initialize_Flank_Table (Table : out Flank_Table) is

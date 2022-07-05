@@ -115,6 +115,21 @@ package body Aspect.ETCS.Braking_Curves is
          end if;
       end;
 
+      -- Enforce ERA ETCS Subset-026 strict speed hierarchy:
+      -- V_Ind <= V_Perm <= V_Warn <= V_SBI <= V_EBI
+      if V_Warn_Mps < V_Perm_Mps then
+         V_Warn_Mps := V_Perm_Mps;
+      end if;
+      if V_Sbi_Mps < V_Warn_Mps then
+         V_Sbi_Mps := V_Warn_Mps;
+      end if;
+      if V_Ebi_Mps < V_Sbi_Mps then
+         V_Ebi_Mps := V_Sbi_Mps;
+      end if;
+      if V_Ind_Mps > V_Perm_Mps then
+         V_Ind_Mps := V_Perm_Mps;
+      end if;
+
       Envelope.EBI_Speed        := Mps_To_Kph (V_Ebi_Mps);
       Envelope.SBI_Speed        := Mps_To_Kph (V_Sbi_Mps);
       Envelope.Warning_Speed    := Mps_To_Kph (V_Warn_Mps);

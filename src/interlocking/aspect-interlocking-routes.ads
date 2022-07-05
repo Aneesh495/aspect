@@ -1,8 +1,6 @@
 -- Interlocking route definitions, switch alignment requirements,
 -- and route lifecycle state transitions.
 
-with Aspect.Types; use Aspect.Types;
-
 package Aspect.Interlocking.Routes is
 
    type Switch_Alignment is record

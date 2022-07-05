@@ -2,7 +2,6 @@
 -- Enforces physical hardware invariants preventing switch movement under moving wheels
 -- or during electrical track circuit disturbances.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology.Network; use Aspect.Topology.Network;
 with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 

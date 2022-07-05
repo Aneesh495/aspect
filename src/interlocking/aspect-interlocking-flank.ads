@@ -2,11 +2,7 @@
 -- Automatically identifies converging switch legs, locks defensive points
 -- in diverting alignments, and clamps opposing shunt signals to Stop.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology.Network; use Aspect.Topology.Network;
-with Aspect.Topology.Switches; use Aspect.Topology.Switches;
-with Aspect.Topology.Signals; use Aspect.Topology.Signals;
-with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 
 package Aspect.Interlocking.Flank is
 

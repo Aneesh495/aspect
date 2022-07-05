@@ -240,11 +240,15 @@ package body Aspect.Interlocking.Engine is
             begin
                if Sw_Id /= Null_Switch_Id and then Natural (Sw_Id) <= Core.Net.Switch_Count then
                   declare
-                     Sw   : Turnout_Switch renames Core.Net.Switches (Sw_Id);
-                     Succ : Boolean;
+                     Sw       : Turnout_Switch renames Core.Net.Switches (Sw_Id);
+                     Occupied : constant Boolean :=
+                       (Sw.Point_Section /= Null_Section_Id and then
+                        Natural (Sw.Point_Section) <= Core.Net.Section_Count and then
+                        Core.Net.Sections (Section_Id (Sw.Point_Section)).Occupancy /= State_Clear);
+                     Succ     : Boolean;
                   begin
                      Request_Throw (Sw, Cmd.Sw_Target,
-                                    Track_Occupied => False,
+                                    Track_Occupied => Occupied,
                                     Accepted       => Succ);
                      Success := Succ;
                      if not Succ then

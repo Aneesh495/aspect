@@ -2,7 +2,6 @@
 -- Automatically analyzes topological overlaps, opposing movements,
 -- and switch contention to enforce mutual exclusion invariants.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 
 package Aspect.Interlocking.Locking_Table is

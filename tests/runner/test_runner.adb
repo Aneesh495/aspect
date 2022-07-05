@@ -11,6 +11,7 @@ with Aspect.Tests.Sim;
 with Aspect.Tests.Telemetry;
 with Aspect.Tests.POSIX;
 with Aspect.Tests.Scenario_Loader;
+with Aspect.Tests.Formal;
 
 procedure Test_Runner is
    Overall_Passed : Boolean := True;
@@ -47,6 +48,9 @@ begin
 
    -- Declarative JSON railway scenario loader and validator
    Aspect.Tests.Scenario_Loader.Run_Scenario_Loader_Tests (Overall_Passed);
+
+   -- Formal EN 50128 SIL 4 mathematical invariant verification rig
+   Aspect.Tests.Formal.Run_Formal_Tests (Overall_Passed);
 
    New_Line;
    Put_Line ("============================================================");

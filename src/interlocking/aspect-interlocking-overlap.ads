@@ -2,10 +2,7 @@
 -- Manages overrun reservation buffers, points within the overlap zone,
 -- and dynamic standstill timer releases.
 
-with Aspect.Types; use Aspect.Types;
 with Aspect.Topology.Network; use Aspect.Topology.Network;
-with Aspect.Topology.Tracks; use Aspect.Topology.Tracks;
-with Aspect.Interlocking.Routes; use Aspect.Interlocking.Routes;
 
 package Aspect.Interlocking.Overlap is
 
