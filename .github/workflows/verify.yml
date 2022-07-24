@@ -1,0 +1,39 @@
+name: Aspect Safety Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    name: EN 50128 SIL 4 Verification Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install GNAT Ada 2022 and Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnat gprbuild make python3
+
+      - name: Display Compiler & Toolchain Versions
+        run: |
+          gnat --version
+          gprbuild --version
+          python3 --version
+
+      - name: Verify Code Quality & Forbidden Character Invariants
+        run: make check-no-emdash
+
+      - name: Build Aspect Kernel & Verification Test Runner
+        run: make build
+
+      - name: Execute SIL 4 Verification Suite (10 Suites, 657 Assertions)
+        run: make test
+
+      - name: Execute Headless High-Speed Simulation (1000 Ticks)
+        run: make headless
